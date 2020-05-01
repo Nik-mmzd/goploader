@@ -15,6 +15,6 @@ var DB *storm.DB
 // Initialize initializes the database (creating it if necessary)
 func Initialize() error {
 	var err error
-	DB, err = storm.Open(conf.C.DB, storm.BoltOptions(0600, &bolt.Options{Timeout: 1 * time.Second}))
+	DB, err = storm.Open(conf.C.DB, storm.BoltOptions(0600, &bbolt.Options{Timeout: 1 * time.Second}))
 	return err
 }

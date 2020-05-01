@@ -38,7 +38,7 @@ func FindAndDelete() {
 	now := time.Now()
 
 	var rs []models.Resource
-	if err = database.DB.Select(q.Lt("UnixDeleteAt", now.Unix())).Find(&rs); err != nil {
+	if err = database.DB.Select(q.And(q.Lt("UnixDeleteAt", now.Unix()), q.Not(q.Eq("UnixDeleteAt", 0)))).Find(&rs); err != nil {
 		if err == storm.ErrNotFound {
 			logger.Debug("monitoring", fmt.Sprintf("Done Monit on Resources (%s)", time.Since(now)))
 			return

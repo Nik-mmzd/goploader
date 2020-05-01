@@ -61,7 +61,7 @@ func Migrate() {
 
 	var rr []Resource
 	var r Resource
-	err = database.DB.Bolt.View(func(tx *bolt.Tx) error {
+	err = database.DB.Bolt.View(func(tx *bbolt.Tx) error {
 		b := tx.Bucket([]byte("resources"))
 		if b == nil {
 			return fmt.Errorf("no bucket")

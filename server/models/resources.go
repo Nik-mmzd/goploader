@@ -28,6 +28,7 @@ var DurationMap = map[string]time.Duration{
 	"6h":  6 * time.Hour,
 	"1d":  24 * time.Hour,
 	"1w":  24 * time.Hour * 7,
+	"never":  0,
 }
 
 // Resource represents the data stored in the database
@@ -44,12 +45,17 @@ type Resource struct {
 // NewResourceFromForm returns a new Resource instance with some fields calculated
 func NewResourceFromForm(h *multipart.FileHeader, once bool, duration time.Duration) Resource {
 	d := time.Now().Add(duration)
+	dUnix := d.Unix()
+	if duration == 0 {
+		dUnix = 0
+	}
+
 	return Resource{
 		Key:          uniuri.NewLen(conf.C.UniURILength),
 		Name:         h.Filename,
 		Once:         once,
 		DeleteAt:     d,
-		UnixDeleteAt: d.Unix(),
+		UnixDeleteAt: dUnix,
 	}
 }
 
